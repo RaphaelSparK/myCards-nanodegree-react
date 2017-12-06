@@ -1,43 +1,95 @@
-import React, { Component } from 'react'
-
+import React, {Component} from 'react'
+import {
+  Container,
+  Dropdown,
+  Image,
+  Menu
+} from 'semantic-ui-react'
 
 import {Link} from 'react-router-dom'
 
 import Bookshelf from './Bookshelf'
 
-
 class Library extends Component {
 
-
-
   filterByShelf(shelf) {
-    return this.props.books.filter( book => book.shelf === shelf )
+    return this
+      .props
+      .books
+      .filter(book => book.shelf === shelf)
   }
 
-  render () {
+  handleChange = (e, { value }) => console.log(value)
+
+  render() {
     const shelves = [
-      { id: 1,shelfTag: "Current Reading",shelf: 'currentlyReading'},
-      { id: 2,shelfTag: "Want to read",shelf: 'wantToRead'},
-      { id: 3,shelfTag: "Read",shelf: 'read'},
+      {
+        id: 1,
+        text: "Current Reading",
+        shelf: 'currentlyReading',
+        color: 'red'
+      }, {
+        id: 2,
+        text: "Want to read",
+        shelf: 'wantToRead',
+        color: 'yellow'
+      }, {
+        id: 3,
+        text: "Read",
+        shelf: 'read',
+        color: 'green'
+      }
     ]
-
+    
     return (
-      <div className="list-books">
-            <div className="list-books-title">
-              <h1>MyReads</h1>
-            </div>
-            <div className="list-books-content">
-              <div>
-
-                { this.props.books.length > 0 && (shelves.map(shelf => (
-                  Bookshelf({ key: shelf.id, shelfTag: shelf.shelfTag, books: this.filterByShelf(shelf.shelf) }))))}
-
-              </div>
-            </div>
-            <div className="open-search">
-              <Link to="/search">Add a book</Link>
-            </div>
+      <div>
+        <Menu fixed='top' inverted>
+          <Container>
+            <Menu.Item as='a' header>
+              <Image
+                size='mini'
+                src='/logo.png'
+                style={{
+                marginRight: '1.5em'
+              }}/>
+              My Reads
+            </Menu.Item>
+            <Menu.Item as='a'>Library</Menu.Item>
+           
+            <Dropdown item simple text='Shelves' onChange={this.handleChange}>
+              <Dropdown.Menu>
+                <Dropdown.Item>Currently reading</Dropdown.Item>
+                <Dropdown.Item>Want to read</Dropdown.Item>
+                <Dropdown.Item>Read</Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
+          </Container>
+        </Menu>
+        <Container text style={{
+          marginTop: '7em',
+          marginBottom: '7em'
+        }}>
+          <div>
+            
+              
+              {this.props.books.length > 0 && (shelves.map(shelf => (
+                Bookshelf({
+                  key: shelf.id,
+                  shelfTag: shelf.text,
+                  shelfColor: shelf.color,
+                  books: this.filterByShelf(shelf.shelf),
+                  onUpdateShelf: this.props.onUpdateShelf
+                })
+              )))}
+              
+            
           </div>
+          <div className="open-search">
+            <Link to="/search">Add a book</Link>
+          </div>
+        </Container>
+
+      </div>
     )
   }
 }

@@ -1,34 +1,70 @@
-import React from 'react'
+import React, {Component} from 'react'
 import PropTypes from 'prop-types'
+import {Item, Icon, Rating, Accordion} from 'semantic-ui-react'
 
-const Book = (props) => {
+class Book extends Component {
 
-  const {book} = props
+  state = {
+    activeIndex: 0
+  }
 
-  return (
-    <div className="book">
-      <div className="book-top">
-        <div
-          className="book-cover"
-          style={{
-          width: 128,
-          height: 193,
-          backgroundImage: `url(${book.imageLinks.thumbnail})`
-        }}></div>
-        <div className="book-shelf-changer">
-          <select value={book.shelf} onChange={() => props.onChangeShelf(book)}>
-            <option value="none" disabled>Move to...</option>
-            <option value="currentlyReading">Currently Reading</option>
-            <option value="wantToRead">Want to Read</option>
-            <option value="read">Read</option>
-            <option value="none">None</option>
-          </select>
-        </div>
-      </div>
-      <div className="book-title">{book.title}</div>
-      <div className="book-authors">{book.authors}</div>
-    </div>
-  )
+  handleClick = (e, titleProps) => {
+    const {index} = titleProps
+    const {activeIndex} = this.state
+    const newIndex = activeIndex === index
+      ? -1
+      : index
+
+    this.setState({activeIndex: newIndex})
+  }
+
+  updateShelf = (e) => {
+    this
+      .props
+      .onChangeShelf(this.props.book, e.target.value)
+  }
+
+  render() {
+    const {activeIndex} = this.state
+    const {book} = this.props
+
+    return (
+      <Item >
+        <Item.Image size='small' src={book.imageLinks.thumbnail}/>
+
+        <Item.Content>
+          <Item.Header as='span'>{book.title}</Item.Header>
+          <Item.Description>
+            <Accordion>
+              <Accordion.Title
+                active={activeIndex !== 0}
+                index={0}
+                onClick={this.handleClick}>
+                <Icon name='dropdown'/>
+                Description
+              </Accordion.Title>
+              <Accordion.Content active={activeIndex !== 0}>
+                {book.description}
+              </Accordion.Content>
+            </Accordion>
+          </Item.Description>
+          <Item.Extra>
+            <div className="book-shelf-changer">
+              <select value={book.shelf} onChange={this.updateShelf}>
+                <option value="none" disabled>Move to...</option>
+                <option value="currentlyReading">Currently Reading</option>
+                <option value="wantToRead">Want to Read</option>
+                <option value="read">Read</option>
+                <option value="none">None</option>
+              </select>
+            </div>
+            <span>Average rating:</span>
+            <Rating icon='star' defaultRating={book.averageRating} maxRating={5} disabled/>
+          </Item.Extra>
+        </Item.Content>
+      </Item>
+    )
+  }
 }
 
 Book.propTypes = {
