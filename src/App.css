@@ -5,7 +5,7 @@ body {
   line-height: 1.5;
 }
 body, .app {
-  background: white;
+ background-color: rgb(209, 221, 255);
 }
 
 /* main page */
@@ -194,4 +194,8 @@ body, .app {
   opacity: 0.01;
   width: 0px;
   transition: 700ms;
+}
+
+.hidden{
+  display:none;
 }

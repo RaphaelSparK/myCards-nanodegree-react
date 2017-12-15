@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
-import {Item, Icon, Rating, Accordion} from 'semantic-ui-react'
+import {Item, Icon, Rating, Accordion, Dropdown} from 'semantic-ui-react'
 
 class Book extends Component {
 
@@ -18,22 +18,51 @@ class Book extends Component {
     this.setState({activeIndex: newIndex})
   }
 
-  updateShelf = (e) => {
+  updateShelf = (e,{value}) => {
+
+    if(this.props.book.shelf !== value) {
     this
       .props
-      .onChangeShelf(this.props.book, e.target.value)
+      .onChangeShelf(this.props.book, value)}
   }
 
   render() {
+    const shelves = [
+      {
+        id: 1,
+        text: "Current Reading",
+        value: 'currentlyReading',
+        color: 'red'
+      }, {
+        id: 2,
+        text: "Want to read",
+        value: 'wantToRead',
+        color: 'yellow'
+      }, {
+        id: 3,
+        text: "Read",
+        value: 'read',
+        color: 'green'
+      }, {
+        id: 4,
+        text: "None",
+        value: 'none',
+        color: 'white'
+      }
+    ]
+
     const {activeIndex} = this.state
     const {book} = this.props
+    let value
+
 
     return (
       <Item >
         <Item.Image size='small' src={book.imageLinks.thumbnail}/>
 
         <Item.Content>
-          <Item.Header as='span'>{book.title}</Item.Header>
+        <Item.Header as='span'>{book.title}</Item.Header>
+        <p>{book.authors.join(', ')}</p>
           <Item.Description>
             <Accordion>
               <Accordion.Title
@@ -49,7 +78,21 @@ class Book extends Component {
             </Accordion>
           </Item.Description>
           <Item.Extra>
-            <div className="book-shelf-changer">
+            <span>Average rating:</span>
+            <Rating icon='star' defaultRating={book.averageRating} maxRating={5} disabled/>
+          </Item.Extra>
+          <Item.Extra>
+          <Dropdown
+            onChange={this.updateShelf}
+            options={shelves}
+            placeholder='Change Shelf'
+            simple item
+            value={value}
+            defaultValue={book.shelf}
+            className='icon'
+
+          />
+            {/* <div className="book-shelf-changer">
               <select value={book.shelf} onChange={this.updateShelf}>
                 <option value="none" disabled>Move to...</option>
                 <option value="currentlyReading">Currently Reading</option>
@@ -57,10 +100,9 @@ class Book extends Component {
                 <option value="read">Read</option>
                 <option value="none">None</option>
               </select>
-            </div>
-            <span>Average rating:</span>
-            <Rating icon='star' defaultRating={book.averageRating} maxRating={5} disabled/>
-          </Item.Extra>
+            </div> */}
+            </Item.Extra>
+
         </Item.Content>
       </Item>
     )

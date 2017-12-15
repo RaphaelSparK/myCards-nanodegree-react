@@ -8,12 +8,12 @@ const Bookshelf = (props) => {
   const {books} = props
 
   return (
-    <Segment raised key={props.key}>
+    <Segment raised key={props.key} className={props.visible === 'all' || props.visible === props.shelf ?'':'hidden'}>
     <Item.Group >
     <Label as='a' color={props.shelfColor} ribbon>{props.shelfTag}</Label>
 
     {books.map(book => (<Book key={book.id} book={book} onChangeShelf={props.onUpdateShelf}/>))}
-   
+
   </Item.Group>
   </Segment>
   )

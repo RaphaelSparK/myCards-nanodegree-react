@@ -1,6 +1,12 @@
 import React from 'react'
 
 import {Route} from 'react-router-dom'
+import {
+  Container,
+  Dropdown,
+  Image,
+  Menu
+} from 'semantic-ui-react'
 
 import './App.css'
 
@@ -17,7 +23,8 @@ class App extends React.Component {
     this.loadBooks = this.loadBooks.bind(this);
   }
   state = {
-    books: []
+    books: [],
+    displayShelf: 'all'
   }
 
   componentDidMount() {
@@ -41,16 +48,61 @@ class App extends React.Component {
     })
   }
 
- 
+  handleChange = (e,d) => this.setState({displayShelf: d.value});
 
   render() {
+
+    const shelves = [
+      {
+        key: 1,
+        text: "Current Reading",
+        value: 'currentlyReading',
+        color: 'red'
+      }, {
+        key: 2,
+        text: "Want to Read",
+        value: 'wantToRead',
+        color: 'yellow'
+      }, {
+        key: 3,
+        text: "Read",
+        value: 'read',
+        color: 'green'
+      }, {
+        key: 4,
+        text: "All",
+        value: 'all',
+        color: 'black'
+      }
+    ]
+
     return (
       <div className="app">
+        <Menu fixed='top' inverted>
+          <Container>
+            <Menu.Item as='a' header>
+              <Image
+                size='mini'
+                src='/logo.png'
+                style={{
+                marginRight: '1.5em'
+              }}/>
+              My Reads
+            </Menu.Item>
+            <Menu.Item as='a'>Library</Menu.Item>
+            <Dropdown text='Shelves' options={shelves} simple item  onChange={this.handleChange}/>
+          </Container>
+        </Menu>
+        <Container text style={{
+          marginTop: '7em',
+          marginBottom: '7em'
+        }}>
+
         <Route exact path='/' render={() => (
-        <Library books={this.state.books} onUpdateShelf={this.updateBook}/>)} />
+        <Library books={this.state.books} shelves={shelves} display={this.state.displayShelf} onUpdateShelf={this.updateBook}/>)} />
 
         <Route path='/search' component={Search}/>
-
+        </Container>
       </div>
     )
   }
