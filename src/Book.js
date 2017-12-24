@@ -57,12 +57,14 @@ class Book extends Component {
 
 
     return (
+      
       <Item >
+        
         <Item.Image size='small' src={book.imageLinks.thumbnail}/>
 
         <Item.Content>
         <Item.Header as='span'>{book.title}</Item.Header>
-        <p>{book.authors.join(', ')}</p>
+        <p>{book.authors?book.authors.join(', '): ''}</p>
           <Item.Description>
             <Accordion>
               <Accordion.Title
@@ -92,15 +94,6 @@ class Book extends Component {
             className='icon'
 
           />
-            {/* <div className="book-shelf-changer">
-              <select value={book.shelf} onChange={this.updateShelf}>
-                <option value="none" disabled>Move to...</option>
-                <option value="currentlyReading">Currently Reading</option>
-                <option value="wantToRead">Want to Read</option>
-                <option value="read">Read</option>
-                <option value="none">None</option>
-              </select>
-            </div> */}
             </Item.Extra>
 
         </Item.Content>

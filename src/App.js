@@ -94,14 +94,15 @@ class App extends React.Component {
           </Container>
         </Menu>
         <Container text style={{
-          marginTop: '7em',
-          marginBottom: '7em'
+          marginTop: '3em',
+          marginBottom: '3em'
         }}>
 
         <Route exact path='/' render={() => (
         <Library books={this.state.books} shelves={shelves} display={this.state.displayShelf} onUpdateShelf={this.updateBook}/>)} />
 
-        <Route path='/search' component={Search}/>
+        <Route path='/search'render={() => (
+        <Search onUpdateShelf={this.updateBook} />)} />
         </Container>
       </div>
     )
