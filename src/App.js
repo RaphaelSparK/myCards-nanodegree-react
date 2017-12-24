@@ -1,12 +1,12 @@
 import React from 'react'
 
-import {Route} from 'react-router-dom'
+import {Route, Link} from 'react-router-dom'
 import {
   Container,
   Dropdown,
-  Image,
   Menu
 } from 'semantic-ui-react'
+
 
 import './App.css'
 
@@ -78,18 +78,12 @@ class App extends React.Component {
 
     return (
       <div className="app">
-        <Menu fixed='top' inverted>
+        <Menu color='blue' fixed='top' inverted>
           <Container>
             <Menu.Item as='a' header>
-              <Image
-                size='mini'
-                src='/logo.png'
-                style={{
-                marginRight: '1.5em'
-              }}/>
               My Reads
             </Menu.Item>
-            <Menu.Item as='a'>Library</Menu.Item>
+            <Menu.Item as={Link} to='/'>Library</Menu.Item>
             <Dropdown text='Shelves' options={shelves} simple item  onChange={this.handleChange}/>
           </Container>
         </Menu>
@@ -101,8 +95,8 @@ class App extends React.Component {
         <Route exact path='/' render={() => (
         <Library books={this.state.books} shelves={shelves} display={this.state.displayShelf} onUpdateShelf={this.updateBook}/>)} />
 
-        <Route path='/search'render={() => (
-        <Search onUpdateShelf={this.updateBook} />)} />
+        <Route path='/search' render={() => (
+        <Search booksOnShelves={this.state.books} onUpdateShelf={this.updateBook} />)} />
         </Container>
       </div>
     )

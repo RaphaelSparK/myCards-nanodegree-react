@@ -18,12 +18,13 @@ class Book extends Component {
     this.setState({activeIndex: newIndex})
   }
 
-  updateShelf = (e,{value}) => {
+  updateShelf = (e, {value}) => {
 
-    if(this.props.book.shelf !== value) {
-    this
-      .props
-      .onChangeShelf(this.props.book, value)}
+    if (this.props.book.shelf !== value) {
+      this
+        .props
+        .onChangeShelf(this.props.book, value)
+    }
   }
 
   render() {
@@ -32,22 +33,38 @@ class Book extends Component {
         id: 1,
         text: "Current Reading",
         value: 'currentlyReading',
-        color: 'red'
+        label: {
+          color: 'red',
+          empty: true,
+          circular: true
+        }
       }, {
         id: 2,
         text: "Want to read",
         value: 'wantToRead',
-        color: 'yellow'
+        label: {
+          color: 'yellow',
+          empty: true,
+          circular: true
+        }
       }, {
         id: 3,
         text: "Read",
         value: 'read',
-        color: 'green'
+        label: {
+          color: 'green',
+          empty: true,
+          circular: true
+        }
       }, {
         id: 4,
         text: "None",
         value: 'none',
-        color: 'white'
+        label: {
+          color: 'blue',
+          empty: true,
+          circular: true
+        }
       }
     ]
 
@@ -55,16 +72,16 @@ class Book extends Component {
     const {book} = this.props
     let value
 
-
     return (
-      
       <Item >
-        
         <Item.Image size='small' src={book.imageLinks.thumbnail}/>
-
         <Item.Content>
-        <Item.Header as='span'>{book.title}</Item.Header>
-        <p>{book.authors?book.authors.join(', '): ''}</p>
+          <Item.Header as='span'>{book.title}</Item.Header>
+          <p>{book.authors
+              ? book
+                .authors
+                .join(', ')
+              : ''}</p>
           <Item.Description>
             <Accordion>
               <Accordion.Title
@@ -84,18 +101,17 @@ class Book extends Component {
             <Rating icon='star' defaultRating={book.averageRating} maxRating={5} disabled/>
           </Item.Extra>
           <Item.Extra>
-          <Dropdown
-            onChange={this.updateShelf}
-            options={shelves}
-            placeholder='Change Shelf'
-            simple item
-            value={value}
-            defaultValue={book.shelf}
-            className='icon'
-
-          />
-            </Item.Extra>
-
+            <Dropdown
+              simple
+              onChange={this.updateShelf}
+              options={shelves}
+              placeholder='Change Shelf'
+              button
+              item
+              value={value}
+              defaultValue={book.shelf}
+              className='icon'/>
+          </Item.Extra>
         </Item.Content>
       </Item>
     )
@@ -103,7 +119,8 @@ class Book extends Component {
 }
 
 Book.propTypes = {
-  book: PropTypes.object.isRequired
+  book: PropTypes.object.isRequired,
+  onChangeShelf: PropTypes.func.isRequired
 }
 
 export default Book

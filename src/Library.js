@@ -1,12 +1,12 @@
 import React, {Component} from 'react'
 
 import {Link} from 'react-router-dom'
+import {Button} from 'semantic-ui-react'
+import PropTypes from 'prop-types'
 
 import Bookshelf from './Bookshelf'
 
 class Library extends Component {
-
-
 
   filterByShelf(shelf) {
     return this
@@ -15,11 +15,12 @@ class Library extends Component {
       .filter(book => book.shelf === shelf)
   }
 
-
+  componentDidMount() {
+    window.scrollTo(0, 0);
+  }
 
   render() {
-
-    const { shelves } = this.props
+    const { shelves, onUpdateShelf } = this.props
 
     return (
       <div>
@@ -32,18 +33,21 @@ class Library extends Component {
                   shelf: shelf.value,
                   shelfColor: shelf.color,
                   books: this.filterByShelf(shelf.value),
-                  onUpdateShelf: this.props.onUpdateShelf
+                  onUpdateShelf: onUpdateShelf
                 })
               )))}
           </div>
-          <div className="open-search">
-            <Link to="/search">Add a book</Link>
-          </div>
-       
-
+          <Button as={Link} to="/search" size='massive' circular icon='plus' color='blue' className="open-search"  />
       </div>
     )
   }
 }
+
+Library.propTypes = {
+  books: PropTypes.array,
+  shelves: PropTypes.array.isRequired,
+  onUpdateShelf: PropTypes.func.isRequired,
+}
+
 
 export default Library

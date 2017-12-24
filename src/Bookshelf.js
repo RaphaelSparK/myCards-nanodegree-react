@@ -12,7 +12,9 @@ const Bookshelf = (props) => {
     <Item.Group >
     <Label as='a' color={props.shelfColor} ribbon>{props.shelfTag}</Label>
 
-    {books.length > 0 ? books.map(book => (<Book key={book.id} book={book} onChangeShelf={props.onUpdateShelf}/>)): <h1>Empty shelf</h1>}
+    {books.length > 0 ? books.map(book => (
+      <Book key={book.id} book={book} onChangeShelf={props.onUpdateShelf}/>
+    )): <h1>Empty shelf</h1>}
 
   </Item.Group>
   </Segment>
@@ -20,7 +22,12 @@ const Bookshelf = (props) => {
 }
 
 Bookshelf.propTypes = {
-  books: PropTypes.object
+  books: PropTypes.object,
+  visible: PropTypes.string,
+  shelfTag: PropTypes.string.isRequired,
+  shelf: PropTypes.string.isRequired,
+  shelfColor: PropTypes.string.isRequired,
+  onUpdateShelf: PropTypes.func.isRequired,
 }
 
 export default Bookshelf
